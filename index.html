@@ -4,38 +4,369 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BlueWave Cleaning</title>
+<meta name="description" content="Vetted local cleaners, one flat price up front, booked in about a minute. Recurring, deep, and move-out cleans for busy households.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--ink:#0f2a43;--blue:#2f6bed;--sky:#eaf1fe;--mut:#5b6b7c;--line:#dbe4f0}
+  :root{
+    /* Deep ocean ink for text, wave blue for action, foam + sky for surfaces, linen for warmth */
+    --ink:#0e2740; --ink-2:#3d5568; --ink-3:#6b8095;
+    --wave:#2f6bed; --wave-deep:#2458cf; --aqua:#57c4d6;
+    --foam:#f4f8fd; --sky:#e9f1fe; --linen:#fbf7ef; --card:#ffffff;
+    --line:#e3eaf3; --line-soft:#eef2f8;
+    --sh-1:0 1px 2px rgba(14,39,64,.05);
+    --sh-2:0 10px 30px -12px rgba(14,39,64,.18);
+    --sh-3:0 26px 60px -22px rgba(14,39,64,.30);
+    --r-sm:10px; --r-md:16px; --r-lg:26px; --r-pill:999px;
+    --pad:24px; --max:1120px;
+  }
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff}
-  header{background:var(--sky);padding:18px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
-  .brand{font-weight:800;font-size:20px;color:var(--blue);letter-spacing:.02em}
-  nav a{color:var(--mut);text-decoration:none;margin-left:22px;font-size:15px}
-  .hero{padding:96px 24px;text-align:center;background:linear-gradient(180deg,#f7faff,#fff)}
-  .hero h1{font-size:clamp(34px,6vw,60px);margin:0 0 16px;letter-spacing:-.02em}
-  .hero p{color:var(--mut);font-size:20px;max-width:52ch;margin:0 auto 32px}
-  .cta{display:inline-block;background:var(--blue);color:#fff;padding:14px 30px;border-radius:10px;font-weight:700;text-decoration:none}
-  .strip{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;padding:56px 24px;border-top:1px solid var(--line)}
-  .card{flex:1;min-width:240px;max-width:320px;border:1px solid var(--line);border-radius:14px;padding:24px}
-  .card h3{margin:0 0 8px} .card p{color:var(--mut);margin:0}
-  footer{padding:32px 24px;text-align:center;color:var(--mut);border-top:1px solid var(--line);font-size:14px}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Inter,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--foam);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.02em;line-height:1.08;margin:0}
+  p{margin:0}
+  a{color:inherit}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:20;background:rgba(244,248,253,.82);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line-soft)}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:700;font-size:21px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .brand .mark{width:26px;height:26px;flex:0 0 auto}
+  nav.links{display:flex;align-items:center;gap:30px}
+  nav.links a{color:var(--ink-2);text-decoration:none;font-size:15px;font-weight:500;transition:color .15s ease}
+  nav.links a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:var(--r-pill);border:1px solid transparent;cursor:pointer;text-decoration:none;transition:transform .12s ease,background .15s ease,box-shadow .15s ease}
+  .btn-primary{background:var(--wave);color:#fff;box-shadow:0 8px 20px -10px rgba(47,107,237,.7)}
+  .btn-primary:hover{background:var(--wave-deep);transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink-3);background:#fff}
+  .nav-cta{padding:10px 18px}
+  .menu-toggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;padding:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);cursor:pointer;box-shadow:var(--sh-1)}
+  .menu-toggle:hover{border-color:var(--ink-3)}
+  .menu-toggle svg{display:block}
+  .menu-toggle .icon-close{display:none}
+  .menu-toggle[aria-expanded="true"] .icon-open{display:none}
+  .menu-toggle[aria-expanded="true"] .icon-close{display:block}
+  .mobile-panel{display:none;position:absolute;left:var(--pad);right:var(--pad);top:calc(100% + 8px);flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--sh-2);padding:14px}
+  .mobile-panel a{color:var(--ink-2);text-decoration:none;font-size:16px;font-weight:500;padding:12px 12px;border-radius:var(--r-sm);transition:color .15s ease,background .15s ease}
+  .mobile-panel a:hover{color:var(--ink);background:var(--foam)}
+  .mobile-panel .btn-primary{margin-top:6px;color:#fff}
+  .mobile-panel .btn-primary:hover{background:var(--wave-deep)}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--sky),var(--foam) 78%)}
+  .hero .ripple{position:absolute;inset:0;pointer-events:none;opacity:.5}
+  .hero-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;padding:88px 0 108px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--wave);background:#fff;border:1px solid var(--line);padding:7px 14px;border-radius:var(--r-pill);box-shadow:var(--sh-1)}
+  .hero h1{font-size:clamp(38px,5.4vw,62px);margin:22px 0 18px}
+  .hero .lede{font-size:clamp(17px,2.1vw,20px);color:var(--ink-2);max-width:46ch}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin:32px 0 26px}
+  .trust-row{display:flex;flex-wrap:wrap;gap:18px 26px;color:var(--ink-2);font-size:14.5px;font-weight:500}
+  .trust-row span{display:inline-flex;align-items:center;gap:8px}
+  .trust-row svg{color:var(--wave)}
+
+  /* Price card (conversion anchor) */
+  .price-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;box-shadow:var(--sh-3)}
+  .price-card .tag{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.02em}
+  .price-card .amount{font-family:Fraunces,serif;font-weight:700;font-size:46px;letter-spacing:-.02em;margin:2px 0 2px}
+  .price-card .amount small{font-family:Inter,sans-serif;font-size:16px;font-weight:600;color:var(--ink-3);letter-spacing:0}
+  .price-card .sub{color:var(--ink-2);font-size:14.5px;margin-bottom:20px}
+  .price-card ul{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:12px}
+  .price-card li{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--ink)}
+  .price-card li svg{flex:0 0 auto;margin-top:2px;color:var(--wave)}
+  .price-card .btn{width:100%}
+
+  /* Wave divider (signature) */
+  .wave-divide{display:block;width:100%;height:70px;margin:0;color:var(--linen)}
+  .wave-divide.to-foam{color:var(--foam)}
+
+  /* Sections */
+  section{scroll-margin-top:84px}
+  .section-pad{padding:86px 0}
+  .section-head{max-width:60ch}
+  .section-head .kicker{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--wave)}
+  .section-head h2{font-size:clamp(28px,3.6vw,40px);margin:12px 0 14px}
+  .section-head p{color:var(--ink-2);font-size:17px}
+
+  /* Services */
+  .services{background:var(--linen)}
+  .svc-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:22px;margin-top:42px}
+  .svc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:28px;box-shadow:var(--sh-2);display:flex;flex-direction:column}
+  .svc.feature{background:linear-gradient(180deg,#fff, #fbfdff);border-color:#cfe0fb}
+  .svc .badge{position:absolute;top:20px;right:20px;font-size:12px;font-weight:700;letter-spacing:.03em;color:var(--wave);background:var(--sky);padding:5px 11px;border-radius:var(--r-pill)}
+  .svc .icon{width:46px;height:46px;display:grid;place-items:center;border-radius:13px;background:var(--sky);color:var(--wave);margin-bottom:18px}
+  .svc h3{font-size:22px;margin-bottom:8px}
+  .svc p{color:var(--ink-2);font-size:15px;flex:1}
+  .svc .from{margin-top:20px;font-size:14px;color:var(--ink-3);font-weight:500}
+  .svc .from b{font-family:Fraunces,serif;font-size:22px;color:var(--ink);font-weight:700}
+
+  /* How it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;counter-reset:step}
+  .step{position:relative;padding:28px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);box-shadow:var(--sh-1)}
+  .step::before{counter-increment:step;content:"0" counter(step);font-family:Fraunces,serif;font-weight:700;font-size:34px;color:#c9d9f7;display:block;margin-bottom:12px;letter-spacing:-.02em}
+  .step h3{font-size:19px;margin-bottom:8px}
+  .step p{color:var(--ink-2);font-size:15px}
+
+  /* Trust band */
+  .assure{background:var(--sky)}
+  .assure-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .assure .cell{display:flex;gap:14px;align-items:flex-start}
+  .assure .ic{width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center;border-radius:11px;background:#fff;color:var(--wave);box-shadow:var(--sh-1)}
+  .assure h3{font-size:16.5px;margin-bottom:4px}
+  .assure p{color:var(--ink-2);font-size:14px}
+
+  /* Booking */
+  .book{background:var(--foam)}
+  .book-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+  .book-copy h2{font-size:clamp(28px,3.6vw,40px);margin-bottom:14px}
+  .book-copy p{color:var(--ink-2);font-size:17px;margin-bottom:22px}
+  .book-copy .assur{display:grid;gap:14px;margin-top:8px}
+  .book-copy .assur span{display:flex;gap:11px;align-items:center;font-size:15px;color:var(--ink)}
+  .book-copy .assur svg{color:var(--wave);flex:0 0 auto}
+  form.booking{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:30px;box-shadow:var(--sh-3);display:grid;gap:18px}
+  .field{display:grid;gap:7px}
+  .field label{font-size:13.5px;font-weight:600;color:var(--ink-2)}
+  .field .req{color:var(--wave)}
+  .control{font:inherit;font-size:15.5px;color:var(--ink);background:var(--foam);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 15px;width:100%;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+  .control::placeholder{color:var(--ink-3)}
+  .control:hover{border-color:#c9d5e6}
+  .control:focus{outline:none;background:#fff;border-color:var(--wave);box-shadow:0 0 0 3px rgba(47,107,237,.16)}
+  select.control{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b8095' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center;padding-right:44px;cursor:pointer}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  form.booking .btn{width:100%;margin-top:4px;padding:15px}
+  form.booking .fine{font-size:12.5px;color:var(--ink-3);text-align:center;margin-top:-4px}
+
+  /* Footer */
+  footer{background:var(--ink);color:#cdd8e6}
+  .foot{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;padding:40px 0}
+  .foot .brand{color:#fff}
+  .foot a{color:#cdd8e6;text-decoration:none;font-size:14.5px;margin-left:24px;transition:color .15s ease}
+  .foot a:hover{color:#fff}
+  .foot .fine{width:100%;border-top:1px solid rgba(255,255,255,.12);padding-top:20px;color:#8ba0b8;font-size:13px}
+
+  /* Responsive */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:40px;padding:64px 0 80px}
+    .svc-grid,.steps,.assure-grid{grid-template-columns:1fr 1fr}
+    .book-grid{grid-template-columns:1fr;gap:36px}
+  }
+  @media(max-width:640px){
+    nav.links{display:none}
+    .menu-toggle{display:inline-flex}
+    .mobile-panel[data-open]{display:flex}
+    .svc-grid,.steps,.assure-grid,.field-row{grid-template-columns:1fr}
+    .section-pad{padding:64px 0}
+    .foot a{margin:0 18px 0 0}
+  }
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 </head>
 <body>
+
 <header>
-  <div class="brand">BlueWave Cleaning</div>
-  <nav><a href="#services">Services</a><a href="#book">Book</a><a href="#book">Contact</a></nav>
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="BlueWave Cleaning home">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="#2f6bed"/>
+        <path d="M4 19c2.4 0 2.4-2.6 4.8-2.6S11.2 19 13.6 19 16 16.4 18.4 16.4 20.8 19 23.2 19 25.6 16.4 28 16.4" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/>
+        <path d="M6 24c2 0 2-2.2 4-2.2S12 24 14 24s2-2.2 4-2.2S20 24 22 24" stroke="#9ecbff" stroke-width="1.9" stroke-linecap="round"/>
+      </svg>
+      BlueWave
+    </a>
+    <nav class="links" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#book">Pricing</a>
+      <a class="btn btn-primary nav-cta" href="#book">Book a clean</a>
+    </nav>
+    <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+      <svg class="icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-panel" id="mobile-menu" aria-label="Mobile">
+    <a href="#services">Services</a>
+    <a href="#how">How it works</a>
+    <a href="#book">Pricing</a>
+    <a class="btn btn-primary" href="#book">Book a clean</a>
+  </nav>
 </header>
+
+<main id="top">
 <section class="hero">
-  <h1>Sparkling clean homes, booked in 60 seconds.</h1>
-  <p>Trusted local cleaners for busy households. Flat pricing, vetted staff, and a spotless finish you can count on.</p>
-  <a class="cta" href="#book">Book a clean</a>
+  <svg class="ripple" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M0 300 Q150 250 300 300 T600 300 T900 300 T1200 300" stroke="#c6dcff" stroke-width="2" fill="none"/>
+    <path d="M0 340 Q150 300 300 340 T600 340 T900 340 T1200 340" stroke="#d8e8ff" stroke-width="2" fill="none"/>
+  </svg>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        Trusted by 2,000+ local homes
+      </span>
+      <h1>A spotless home, without the back and forth.</h1>
+      <p class="lede">BlueWave matches you with vetted local cleaners, gives you one flat price up front, and handles the rest. Book in about a minute.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#book">Book a clean</a>
+        <a class="btn btn-ghost" href="#services">See services</a>
+      </div>
+      <div class="trust-row">
+        <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>Vetted &amp; background-checked</span>
+        <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Fully insured</span>
+        <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Flat pricing, no surprises</span>
+      </div>
+    </div>
+    <aside class="price-card" aria-label="Flat pricing example">
+      <div class="tag">Flat pricing</div>
+      <div class="amount">$119 <small>/ standard clean</small></div>
+      <p class="sub">A tidy 2-bed home, top to bottom. Your quote is locked before we arrive.</p>
+      <ul>
+        <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>The same trusted team each visit</li>
+        <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>We bring our own eco supplies</li>
+        <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Free re-clean if it is not right</li>
+      </ul>
+      <a class="btn btn-primary" href="#book">Get my flat quote</a>
+    </aside>
+  </div>
 </section>
-<section class="strip" id="services">
-  <div class="card"><h3>Weekly &amp; biweekly</h3><p>A regular team that learns your home and keeps it consistent.</p></div>
-  <div class="card"><h3>Deep cleans</h3><p>Move-in, move-out, and seasonal top-to-bottom resets.</p></div>
-  <div class="card"><h3>Flat pricing</h3><p>Clear quotes up front. No surprises on the invoice.</p></div>
+
+<svg class="wave-divide" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C200 5 400 5 600 40 C800 75 1000 75 1200 40 L1200 70 L0 70 Z" fill="currentColor"/></svg>
+
+<section class="services section-pad" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Services</div>
+      <h2>Pick the clean your week actually needs.</h2>
+      <p>Every visit is done by a vetted team that learns your home. No contracts, cancel or reschedule anytime.</p>
+    </div>
+    <div class="svc-grid">
+      <article class="svc feature">
+        <span class="badge">Most booked</span>
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Recurring clean</h3>
+        <p>A regular team on weekly or biweekly rhythm that keeps your home consistently fresh, so it never piles up.</p>
+        <div class="from">From <b>$109</b> / visit</div>
+      </article>
+      <article class="svc">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 7v6c0 5 8 9 8 9s8-4 8-9V7l-8-5Z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Deep clean</h3>
+        <p>A top-to-bottom reset for the corners a regular clean skips. Great before guests or a new season.</p>
+        <div class="from">From <b>$189</b></div>
+      </article>
+      <article class="svc">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l9-6 9 6v11"/><path d="M9 21v-6h6v6"/></svg></div>
+        <h3>Move in / move out</h3>
+        <p>Hand back the keys spotless or start fresh in a place that feels brand new. Deposit-ready detail.</p>
+        <div class="from">From <b>$239</b></div>
+      </article>
+    </div>
+  </div>
 </section>
-<footer>BlueWave Cleaning · Serving the metro area · hello@bluewave.example</footer>
+
+<svg class="wave-divide to-foam" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C200 5 400 5 600 40 C800 75 1000 75 1200 40 L1200 70 L0 70 Z" fill="currentColor"/></svg>
+
+<section class="section-pad" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">How it works</div>
+      <h2>Three steps between you and a clean home.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Tell us about your home</h3><p>Share your address, the service you want, and a date. It takes about a minute.</p></div>
+      <div class="step"><h3>We match a vetted team</h3><p>You get a locked flat quote and the same trusted cleaners each visit.</p></div>
+      <div class="step"><h3>They arrive, you relax</h3><p>Come home to a spotless place. Not happy with a spot? We re-clean it free.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="assure section-pad">
+  <div class="wrap">
+    <div class="assure-grid">
+      <div class="cell"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div><div><h3>Vetted people</h3><p>Every cleaner is interviewed and background-checked before a single visit.</p></div></div>
+      <div class="cell"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div><div><h3>Fully insured</h3><p>Your home is covered on every visit, so there is nothing to worry about.</p></div></div>
+      <div class="cell"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><h3>Flat pricing</h3><p>One clear quote up front. No hourly meter, no surprise line on the invoice.</p></div></div>
+      <div class="cell"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div><div><h3>Happiness guarantee</h3><p>If a spot is not right, tell us within 24 hours and we re-clean it free.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="book section-pad" id="book">
+  <div class="wrap book-grid">
+    <div class="book-copy">
+      <h2>Book a clean</h2>
+      <p>Tell us a little about your home and when you would like us. We confirm your flat quote by email, usually the same day.</p>
+      <div class="assur">
+        <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>No payment now, no obligation</span>
+        <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Reschedule or cancel anytime</span>
+        <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A reply from a real person</span>
+      </div>
+    </div>
+    <form class="booking" action="mailto:hello@bluewave.example" method="post" enctype="text/plain" aria-label="Book a clean">
+      <div class="field">
+        <label for="name">Full name <span class="req" aria-hidden="true">*</span></label>
+        <input class="control" id="name" name="name" type="text" autocomplete="name" placeholder="Jordan Rivera" required>
+      </div>
+      <div class="field">
+        <label for="address">Home address <span class="req" aria-hidden="true">*</span></label>
+        <input class="control" id="address" name="address" type="text" autocomplete="street-address" placeholder="123 Maple St, Springfield" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="service">Service type <span class="req" aria-hidden="true">*</span></label>
+          <select class="control" id="service" name="service" required>
+            <option value="" disabled selected>Choose a service</option>
+            <option value="recurring">Recurring clean</option>
+            <option value="deep">Deep clean</option>
+            <option value="move">Move in / move out</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="date">Preferred date <span class="req" aria-hidden="true">*</span></label>
+          <input class="control" id="date" name="date" type="date" required>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Request my flat quote</button>
+      <p class="fine">We reply by email. We never share your details.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#top" aria-label="BlueWave Cleaning home">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="#2f6bed"/>
+        <path d="M4 19c2.4 0 2.4-2.6 4.8-2.6S11.2 19 13.6 19 16 16.4 18.4 16.4 20.8 19 23.2 19 25.6 16.4 28 16.4" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/>
+      </svg>
+      BlueWave
+    </a>
+    <nav aria-label="Footer">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#book">Book a clean</a>
+    </nav>
+    <p class="fine">BlueWave Cleaning · Serving the metro area · hello@bluewave.example</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var toggle=document.querySelector('.menu-toggle');
+    var panel=document.getElementById('mobile-menu');
+    if(!toggle||!panel)return;
+    function close(){panel.removeAttribute('data-open');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open menu');}
+    function open(){panel.setAttribute('data-open','');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Close menu');}
+    toggle.addEventListener('click',function(){
+      panel.hasAttribute('data-open')?close():open();
+    });
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a'))close();
+    });
+  })();
+</script>
+
 </body>
 </html>
